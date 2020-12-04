@@ -46,7 +46,11 @@ c = CRM*t # coût total (fixe et variable)
 ## ---------------------------------------------------------------------------
 ## Simulation
 for n in range(N):
+    print("-------------------------")
+    print("Jour : ",n)
+    print("Etat d vent : ",v)
     k = [] # liste contenant les éoliennes à réparer
+    print("Etat des eoliennes : ",s)
     for e in range(NE): # recherche des éoliennes à réparer
         if m[e]==0: # si l'éolienne n'est pas en maintenance
             if s[e] >= S: # si l'éolienne est plus abimée que le seuil
@@ -58,11 +62,15 @@ for n in range(N):
                     t+=1 # on libère une équipe
                     s[e] = 0
     j=0
-    while j>=t or j> len(k): # assignation des équipes aux éoliennes à réparer
+    print("Liste à réparer : ",k)
+    print("Nombre d'équipes disponibles : ",t)
+    while j<t and j<len(k): # assignation des équipes aux éoliennes à réparer
         m[k[j][1]]=1
         j+=1
         c+=CM
     t = max(0,t-j)
+    print("Maintenance : ",m)
+    print("Nombre d'équipes disponibles ensuite : ",t)
     for e in range(NE): # dégradation des éoliennes et production
         if m[e]< 3 and s[e] < 3 and v > 0: # si l'éolienne peut être abimée
             if v != 2 or s[e]!=2: # si l'éolienne fonctionne
@@ -72,6 +80,8 @@ for n in range(N):
                 j+=1
                 b += P[v-1][s[e]][j]
             s[e] = j # dégradation de l'éolienne
+    print("Production actuellement : ",r)
+    print("Cout actuellement : ",c)
     j,rn,b = 0,random(),V[v][0]
     while b < rn:
         j+=1
